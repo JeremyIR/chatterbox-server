@@ -13,7 +13,6 @@ this file and include it in basic-server.js so that it actually works.
 **************************************************************/
 
 var requestHandler = function(request, response) {
-  var results = [];
 
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
   var statusCode = 200;
@@ -22,9 +21,14 @@ var requestHandler = function(request, response) {
   if (request.method === 'GET' && request.url === '/classes/messages') {
     headers['Content-Type'] = 'application/json';
     response.writeHead(response.statusCode, response.headers);
-    response.end(JSON.stringify({message: results}));
+    response.end(JSON.stringify({results: []}));
   }
 
+  if (request.method === 'POST' && request.url === '/send') {
+    response.statusCode = 201;
+    response.headers;
+    response.end();
+  }
 };
 
 
@@ -40,3 +44,16 @@ module.exports = {
 };
 
 
+// headers['Content-Type'] = 'application/json';
+//     response.writeHead(response.statusCode, response.headers);
+//     response.setEncoding('utf-8');
+//     response.on('data', function(chunk) {
+//       console.log('Response ' + chunk);
+//     });
+
+ // response.write({
+ //    username: 'Jono',
+ //    message: 'Do my bidding!'
+ //  });
+
+ //  response.end();
