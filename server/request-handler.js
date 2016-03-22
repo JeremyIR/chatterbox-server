@@ -17,6 +17,11 @@ var requestHandler = function(request, response) {
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
   var statusCode = 200;
   var headers = defaultCorsHeaders;  
+
+  if (request.method === 'OPTIONS') {  
+    response.writeHead(statusCode, headers);
+    response.end();
+  }
   if (request.method === 'GET' && request.url === '/classes/messages') {
     headers['Content-Type'] = 'application/json';
     response.writeHead(statusCode, headers);
