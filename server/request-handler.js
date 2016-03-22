@@ -17,17 +17,24 @@ var requestHandler = function(request, response) {
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
   var statusCode = 200;
   var headers = defaultCorsHeaders;
+  var results = [];
   
-  if (request.method === 'GET' && request.url === '/classes/messages') {
+  if (request.method === 'GET' ) { //&& request.url === '/classes/messages') {
     headers['Content-Type'] = 'application/json';
     response.writeHead(response.statusCode, response.headers);
     response.end(JSON.stringify({results: []}));
   }
 
-  if (request.method === 'POST' && request.url === '/classes/messages') {
+  if (request.method === 'POST' ) { //&& request.url === '/classes/messages') {
     response.statusCode = 201;
-    response.writeHead(response.statusCode, response.headers);
-    response.end();
+    var body = '';
+    request.on('data', function(chunk) {
+    }).on('end', function() {
+      body += chunk;
+      var data = JSON.parse(body);
+      response.writeHead(response.statusCode, response.headers);
+      response.end(data);
+    });
   }
 };
 
