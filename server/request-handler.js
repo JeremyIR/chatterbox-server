@@ -24,13 +24,12 @@ var requestHandler = function(request, response) {
     response.end(JSON.stringify({results: []}));
   }
 
-  if (request.method === 'POST' && request.url === '/send') {
+  if (request.method === 'POST' && request.url === '/classes/messages') {
     response.statusCode = 201;
-    response.headers;
+    response.writeHead(response.statusCode, response.headers);
     response.end();
   }
 };
-
 
 var defaultCorsHeaders = {
   'access-control-allow-origin': '*',
@@ -42,18 +41,3 @@ var defaultCorsHeaders = {
 module.exports = {
   request: requestHandler
 };
-
-
-// headers['Content-Type'] = 'application/json';
-//     response.writeHead(response.statusCode, response.headers);
-//     response.setEncoding('utf-8');
-//     response.on('data', function(chunk) {
-//       console.log('Response ' + chunk);
-//     });
-
- // response.write({
- //    username: 'Jono',
- //    message: 'Do my bidding!'
- //  });
-
- //  response.end();
