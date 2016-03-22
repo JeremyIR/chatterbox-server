@@ -34,7 +34,10 @@ var requestHandler = function(request, response) {
       response.writeHead(statusCode, headers);
       response.end(JSON.stringify(post));
     });
-  }
+  } else {
+    response.statusCode = 404;
+    response.end();
+  } 
 };
 
 var defaultCorsHeaders = {
@@ -45,6 +48,4 @@ var defaultCorsHeaders = {
   'access-control-max-age': 10 // Seconds.
 };
 
-module.exports = {
-  request: requestHandler
-};
+exports.requestHandler = requestHandler;
