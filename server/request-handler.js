@@ -24,31 +24,29 @@ var requestHandler = function(request, response) {
     return;
   }
 
-  if (request.method === 'GET' && request.url === '/classes/messages') {
+  if (request.method === 'GET') {
     response.writeHead(statusCode, headers);
     response.end(JSON.stringify({results: global.messages}));
     return;
-  }
+  } 
 
   if (request.method === 'POST') {
-    if (request.url === '/classes/messages' || request.url === '/classes/room') {     
-      statusCode = 201;
-      var data = '';
-      request.on('data', function(chunk) {
-        data += chunk;
-      });
-      request.on('end', function() {
-        var post = JSON.parse(data);
-        global.messages.push(post);
-        response.writeHead(statusCode, headers);
-        response.end(JSON.stringify(post));
-        return;
-      });
-    }
-  } else {
-    response.statusCode = 404;
-    response.end();
-    return;
+    statusCode = 201;
+    var data = '';
+    request.on('error', function(err) {
+      statusCode = 404;
+      response.end();
+    });
+    request.on('data', function(chunk) {
+      data += chunk;
+    });
+    request.on('end', function() {
+      var post = JSON.parse(data);
+      global.messages.push(post);
+      response.writeHead(statusCode, headers);
+      response.end(JSON.stringify(post));
+      return;
+    });
   } 
 };
 
