@@ -14,48 +14,48 @@ this file and include it in basic-server.js so that it actually works.
 global.messages = [];
 var requestHandler = function(request, response) {
 
-  console.log('Serving request type ' + request.method + ' for url ' + request.url);
-  var statusCode = 200;
-  var headers = defaultCorsHeaders;  
+    console.log('Serving request type ' + request.method + ' for url ' + request.url);
+    var statusCode = 200;
+    var headers = defaultCorsHeaders;
 
-  if (request.method === 'OPTIONS') {  
-    response.writeHead(statusCode, headers);
-    response.end();
-    return;
-  }
+    if (request.method === 'OPTIONS') {
+        response.writeHead(statusCode, headers);
+        response.end();
+        return;
+    }
 
-  if (request.method === 'GET') {
-    response.writeHead(statusCode, headers);
-    response.end(JSON.stringify({results: global.messages}));
-    return;
-  } 
+    if (request.method === 'GET') {
+        response.writeHead(statusCode, headers);
+        response.end(JSON.stringify({ results: global.messages }));
+        return;
+    }
 
-  if (request.method === 'POST') {
-    statusCode = 201;
-    var data = '';
-    request.on('error', function(err) {
-      statusCode = 404;
-      response.end();
-    });
-    request.on('data', function(chunk) {
-      data += chunk;
-    });
-    request.on('end', function() {
-      var post = JSON.parse(data);
-      global.messages.push(post);
-      response.writeHead(statusCode, headers);
-      response.end(JSON.stringify(post));
-      return;
-    });
-  } 
+    if (request.method === 'POST') {
+        statusCode = 201;
+        var data = '';
+        request.on('error', function(err) {
+            statusCode = 404;
+            response.end();
+        });
+        request.on('data', function(chunk) {
+            data += chunk;
+        });
+        request.on('end', function() {
+            var post = JSON.parse(data);
+            global.messages.push(post);
+            response.writeHead(statusCode, headers);
+            response.end(JSON.stringify(post));
+            return;
+        });
+    }
 };
 
 var defaultCorsHeaders = {
-  'access-control-allow-origin': '*',
-  'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'access-control-allow-headers': 'content-type, accept',
-  'content-type': 'application/json',
-  'access-control-max-age': 10 // Seconds.
+    'access-control-allow-origin': '*',
+    'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'access-control-allow-headers': 'content-type, accept',
+    'content-type': 'application/json',
+    'access-control-max-age': 10 // Seconds.
 };
 
 exports.requestHandler = requestHandler;
